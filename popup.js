@@ -33,7 +33,7 @@ function renderItems() {
   $("items-heading").textContent = `Your items (${items.length})`;
   $("rescan").textContent = items.length
     ? "Scan again"
-    : "Read visible bag items";
+    : "Scan bag";
   wrap.replaceChildren();
   if (!items.length) {
     const p = document.createElement("p");
