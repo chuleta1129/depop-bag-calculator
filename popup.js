@@ -167,7 +167,7 @@ async function scan() {
     renderItems();
     calculate();
     $("status").textContent =
-      `Found ${items.length} possible item${items.length === 1 ? "" : "s"}. The subtotal and estimated total are updated below.`;
+      `Found ${items.length} item${items.length === 1 ? "" : "s"}. The subtotal and estimated total are updated below.`;
   } catch (err) {
     $("status").textContent =
       "Could not scan this page: " + (err?.message || String(err));
