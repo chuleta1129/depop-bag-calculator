@@ -1,0 +1,254 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Depop Bag Calculator</title>
+    <style>
+      :root {
+        color-scheme: light;
+        --ink: #30242d;
+        --muted: #756773;
+        --pink: #e7a5c4;
+        --line: #eadfe7;
+        --bg: #fffafd;
+        --soft: #f8edf3;
+        --good: #287a50;
+        --warn: #8a5a14;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        font:
+          13px/1.4 system-ui,
+          -apple-system,
+          Segoe UI,
+          sans-serif;
+        width: 360px;
+        max-height: 590px;
+        overflow-y: auto;
+        margin: 0;
+        padding: 15px;
+        background: var(--bg);
+        color: var(--ink);
+      }
+      header {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 10px;
+      }
+      .logo {
+        width: 36px;
+        height: 36px;
+        border-radius: 11px;
+        background: var(--soft);
+        display: grid;
+        place-items: center;
+        font-size: 20px;
+      }
+      h1 {
+        font-size: 18px;
+        margin: 0;
+        line-height: 1.2;
+      }
+      header p {
+        margin: 3px 0 0;
+        color: var(--muted);
+        font-size: 11px;
+      }
+      button {
+        font: inherit;
+        cursor: pointer;
+        border: 0;
+        border-radius: 9px;
+        padding: 10px 12px;
+        font-weight: 700;
+      }
+      .primary {
+        width: 100%;
+        background: var(--pink);
+        color: #321b2b;
+      }
+      .secondary {
+        background: #f1e7ed;
+        color: var(--ink);
+      }
+      button:disabled {
+        opacity: 0.6;
+        cursor: wait;
+      }
+      #status {
+        white-space: pre-wrap;
+        color: var(--muted);
+        font-size: 11px;
+        margin: 8px 0 10px;
+        min-height: 15px;
+      }
+      .panel {
+        border: 1px solid var(--line);
+        background: #fff;
+        border-radius: 12px;
+        padding: 11px;
+        margin-top: 10px;
+      }
+      .panel h2 {
+        font-size: 13px;
+        margin: 0 0 8px;
+      }
+      .item-list {
+        display: flex;
+        flex-direction: column;
+        gap: 7px;
+        max-height: 165px;
+        overflow: auto;
+      }
+      .item {
+        display: flex;
+        align-items: flex-start;
+        gap: 8px;
+        padding-bottom: 7px;
+        border-bottom: 1px solid #f3ebf0;
+      }
+      .item:last-child {
+        border-bottom: 0;
+        padding-bottom: 0;
+      }
+      .item-name {
+        flex: 1;
+        min-width: 0;
+        overflow-wrap: anywhere;
+        font-weight: 600;
+      }
+      .item-name small {
+        display: block;
+        color: var(--muted);
+        font-weight: 400;
+        font-size: 10px;
+        margin-top: 2px;
+      }
+      .price {
+        white-space: nowrap;
+        font-weight: 700;
+      }
+      .empty {
+        color: var(--muted);
+        font-size: 12px;
+        margin: 0;
+      }
+      .fields {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+      }
+      .field label {
+        display: block;
+        font-size: 11px;
+        color: var(--muted);
+        margin-bottom: 4px;
+      }
+      .field input {
+        width: 100%;
+        border: 1px solid var(--line);
+        border-radius: 8px;
+        padding: 8px;
+        font: inherit;
+        color: var(--ink);
+        background: white;
+      }
+      .totalrow {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 4px 0;
+      }
+      .totalrow.muted {
+        color: var(--muted);
+      }
+      .totalrow.final {
+        border-top: 1px solid var(--line);
+        margin-top: 6px;
+        padding-top: 10px;
+        font-weight: 800;
+        font-size: 16px;
+      }
+      .totalrow.final strong {
+        color: var(--good);
+      }
+      .budget-note {
+        margin-top: 7px;
+        font-size: 11px;
+        color: var(--muted);
+      }
+      .actions {
+        display: flex;
+        gap: 8px;
+        margin-top: 9px;
+      }
+      .actions button {
+        flex: 1;
+        font-size: 11px;
+        padding: 8px;
+      }
+      .foot {
+        font-size: 10px;
+        color: var(--muted);
+        margin: 10px 2px 0;
+      }
+      .link {
+        color: inherit;
+        text-decoration: none;
+      }
+      .link:hover {
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="logo">🛍️</div>
+      <div>
+        <h1>Depop Bag Calculator</h1>
+        <p>Scan your bag · Estimate your total</p>
+      </div>
+    </header>
+    <div id="status" role="status" aria-live="polite">
+      Open your Depop bag in this tab, then scan.
+    </div>
+    <section class="panel">
+      <h2 id="items-heading">Your items (0)</h2>
+      <div id="items" class="item-list">
+        <p class="empty">No items scanned yet.</p>
+      </div>
+      <div class="actions">
+        <button class="secondary" id="rescan">Read visible bag items</button
+        ><button class="secondary" id="clear">Clear items</button>
+      </div>
+    </section>
+
+    <section class="panel">
+      <h2>Estimated checkout (before shipping)</h2>
+      <div class="totalrow muted">
+        <span>Items subtotal</span><span id="subtotal">$0.00</span>
+      </div>
+      <div class="totalrow muted">
+        <span>Marketplace fees (5% + $0.70/item)</span
+        ><span id="fees-total">$0.00</span>
+      </div>
+      <div class="totalrow muted">
+        <span>Estimated sales tax (10.5%)</span
+        ><span id="tax-total">$0.00</span>
+      </div>
+      <div class="totalrow final">
+        <span>Total before shipping</span
+        ><strong id="grand-total">$0.00</strong>
+      </div>
+    </section>
+    <p class="foot">
+      Only visible page content is scanned. Fees and tax are estimates based on
+      your best-fit formulas. Shipping is not included.
+    </p>
+    <script src="popup.js"></script>
+  </body>
+</html>

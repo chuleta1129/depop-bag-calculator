@@ -1,0 +1,12 @@
+{
+  "manifest_version": 3,
+  "name": "Depop Bag Calculator",
+  "version": "2.0.0",
+  "description": "Scan visible Depop bag items and calculate an estimated total directly in the extension.",
+  "permissions": ["activeTab", "scripting", "storage"],
+  "host_permissions": ["https://www.depop.com/*"],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Depop Bag Calculator"
+  }
+}
